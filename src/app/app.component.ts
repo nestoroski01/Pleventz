@@ -22,6 +22,7 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
   private storage: NativeStorage, private global: GlobalProvider) {
     this.initializeApp();
+    // this is commented so you can run it in your browser.
     // this.storage.getItem('isLogged').then( val => {
     //   console.log(val);
     //   if(val == true)
