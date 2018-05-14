@@ -1,0 +1,78 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <img id="header" src="assets/imgs/pleventz.jpg" alt="header">
+    <ion-buttons end>
+      <button ion-button icon-only id="account">
+        <ion-icon name="blank"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar mode="md">
+    <ion-segment mode="md" [(ngModel)]="typeForm" color="primary">
+      <ion-segment-button value="login">
+        <ion-icon name="person"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="register">
+        <ion-icon name="person-add"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [ngSwitch]="typeForm" text-center>
+  <div class="background" padding *ngSwitchCase="'login'">
+    <form name="loginForm" [formGroup]="loginForm">
+      <img id="logo" src="assets/imgs/icon.png" alt="logo">
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="email" required name="email" formControlName="email" [(ngModel)]="loginData.email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" required name="password" formControlName="password" [(ngModel)]="loginData.password"></ion-input>
+      </ion-item>
+
+      <button ion-button full color="primary" id="login" (click)="login()">Login</button>
+    </form>
+  </div>
+
+  <div class="background" padding *ngSwitchCase="'register'">
+    <form name="registerForm" [formGroup]="registerForm">
+      <img id="logo" src="assets/imgs/icon.png" alt="logo">
+      <ion-item>
+        <ion-label floating>Forename</ion-label>
+        <ion-input type="text" required name="forename" formControlName="forename" [(ngModel)]="registerData.forename"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Surname</ion-label>
+        <ion-input type="text" required name="surname" formControlName="surname" [(ngModel)]="registerData.surname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Username</ion-label>
+        <ion-input type="text" required name="username" formControlName="username" [(ngModel)]="registerData.username"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="email" required name="email" formControlName="email" [(ngModel)]="registerData.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" required name="password" formControlName="password" [(ngModel)]="registerData.password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Confirm Password</ion-label>
+        <ion-input type="password" required name="confirmPassword" formControlName="confirmPassword" [(ngModel)]="registerData.confirmPassword"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>I agree to the Terms</ion-label>
+        <ion-checkbox color="primary" ng-checked="false" name="terms" formControlName="terms" [(ngModel)]="registerData.terms"></ion-checkbox>
+      </ion-item>
+      <button ion-button full color="primary" id="login" (click)="register()">Submit</button>
+    </form>
+  </div>
+</ion-content>

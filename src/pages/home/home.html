@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <img id="header" src="assets/imgs/pleventz.jpg" alt="header">
+    <ion-buttons end>
+      <button ion-button icon-only id="account" (click)="pushToAccount()">
+        <ion-icon name="person"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content text-center>
+  <div #map id="map"></div>
+  <div class="search">
+    <ion-item no-lines>
+      <ion-label fixed>Keyword</ion-label>
+      <ion-input type="text" class="text-input" clearInput [(ngModel)]="keyword"></ion-input>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-label fixed>Date</ion-label>
+      <ion-input type="text" [(ngModel)]="date" disabled="true"></ion-input>
+      <button icon-only id="calendar" item-right (click)="openCalendar()">
+        <ion-icon color="primary" name="calendar"></ion-icon>
+      </button>
+    </ion-item>
+    <button ion-button full (click)="pushToSearch(true,'')">Search</button>
+  </div>
+  <div class="box" *ngFor="let pic of pictures" tappable (click)="pushToSearch(false, pic.category)">
+    <img class="img-events" src="assets/imgs/{{pic.name}}" alt="pic">
+    <div class="ribbon">
+      <div class="txt">{{pic.text}}</div>
+    </div>
+  </div>
+  <div class="footer">
+    <h4>Pleventz.com © 2018 All Rights Reserved.</h4>
+  </div>
+</ion-content>

@@ -1,0 +1,43 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <img id="header" src="assets/imgs/pleventz.jpg" alt="header">
+    <ion-buttons end>
+      <button ion-button icon-only id="account">
+        <ion-icon name="blank"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content text-center>
+  <div class="background" padding>
+      <ion-item *ngIf="!isSearching">
+          <ion-label>Event Categories</ion-label>
+          <ion-select (ionChange)="onFilter($event)">
+            <ion-option value="4">All Events</ion-option>
+            <ion-option value="1">Sport Events</ion-option>
+            <ion-option value="2">Concerts</ion-option>
+            <ion-option value="3">Teathre and Comedy</ion-option>
+          </ion-select>
+        </ion-item>
+    <ion-card *ngFor="let event of category" (click)="pushToEvent(event)" tappable>
+      <img src="{{event.image}}"/>
+      <ion-card-content>
+        <ion-card-title>
+          {{event.event_name}}
+          </ion-card-title>
+        <p>
+          {{event.description}}
+        </p>
+        <span id="address">{{event.address}}</span>
+        <ion-badge item-end>{{event.event_date}}, {{event.event_time}}</ion-badge>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

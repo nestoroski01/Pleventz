@@ -1,0 +1,41 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <img id="header" src="assets/imgs/pleventz.jpg" alt="header">
+    <ion-buttons end>
+      <button ion-button icon-only id="account">
+        <ion-icon name="blank"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content text-center>
+  <div class="background" padding>
+    <form name="profileForm" [formGroup]="profileForm" ng-disabled="true">
+      <img id="logo" src="assets/imgs/icon.png" alt="logo">
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input [disabled]="!isEditing" type="text" required name="forename" formControlName="forename" [(ngModel)]="user.forename"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Surname</ion-label>
+        <ion-input [disabled]="!isEditing" type="text" required name="surname" formControlName="surname" [(ngModel)]="user.surname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Username</ion-label>
+        <ion-input [disabled]="!isEditing" type="text" required name="username" formControlName="username" [(ngModel)]="user.username"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input [disabled]="!isEditing" type="email" required name="email" formControlName="email" [(ngModel)]="user.email"></ion-input>
+      </ion-item>
+      <button *ngIf="!isEditing" ion-button full color="danger" id="login" (click)="logOut()">Log Out</button>
+    </form>
+  </div>
+</ion-content>

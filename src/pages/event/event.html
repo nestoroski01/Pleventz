@@ -1,0 +1,47 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <img id="header" src="assets/imgs/pleventz.jpg" alt="header">
+    <ion-buttons end>
+      <button ion-button icon-only id="account">
+        <ion-icon name="blank"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="background">
+    <img src="{{event.image}}" alt="header">
+    <div padding>
+      <h1>{{event.event_name}}</h1>
+      <span id="address">{{event.address}}</span>
+      <p>{{event.description}}</p>
+      <ion-icon name="calendar" color="primary"></ion-icon>
+      <ion-badge item-end>{{event.event_date}}, {{event.event_time}}</ion-badge>
+    </div>
+    <div *ngIf="isCommenting" id="comment" padding>
+      <ion-item>
+        <ion-label floating>Enter your comment</ion-label>
+        <ion-input type="text" required name="comment" [(ngModel)]="comment"></ion-input>
+      </ion-item>
+    </div>
+    <button *ngIf="isLogged" ion-button full color="primary" (click)="toggleCommenting()">Add comment</button>
+  </div>
+
+  <div class="comments" padding *ngFor="let comment of comments">
+      <h4 id="username">{{comment.username}}
+        
+      </h4>
+      <span id="date">{{comment.date_added | date:'MMM d, y, hh:mm'}}</span>
+      <p id="comment">{{comment.comment}}</p>
+      <button id="delete" *ngIf="deleteCommentValidate(comment.user_id)" ion-button color="danger" full (click)="deleteComment(comment.comment_id)">
+        Delete Comment
+      </button>
+    </div>
+</ion-content>
