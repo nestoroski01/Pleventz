@@ -52,7 +52,7 @@ export class HomePage {
 
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-      let latLng = new google.maps.LatLng(31.582045, 74.329376);
+      let latLng = new google.maps.LatLng(50.376289, -4.142741);
       this.map.setCenter(latLng);
       this.map.setZoom(15);
       this.addMarker(latLng, this.map);
