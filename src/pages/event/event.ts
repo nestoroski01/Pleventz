@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, LoadingCmp } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, LoadingCmp, Platform } from 'ionic-angular';
 import { Comment } from '../../objects/comment';
 import { ApiProvider } from '../../providers/api/api';
 import { GlobalProvider } from '../../providers/global/global';
 import { LoginPage } from '../login/login';
+
+declare var google;
 
 @IonicPage()
 @Component({
@@ -11,6 +13,9 @@ import { LoginPage } from '../login/login';
   templateUrl: 'event.html',
 })
 export class EventPage {
+  @ViewChild('map') mapElement: ElementRef;
+  map: any;
+
   isCommenting = false;
   comment: String;
   event: any;
@@ -18,8 +23,9 @@ export class EventPage {
   loader = this.loadingCtrl.create()
   user: any;
   isLogged = false;
+  isViewingMap = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, private api: ApiProvider,
-    private loadingCtrl: LoadingController, private global: GlobalProvider) {
+    private loadingCtrl: LoadingController, private global: GlobalProvider, private platform: Platform) {
     this.isLogged = global.isLogged;
     this.user = global.user;
     this.loader.present()
@@ -28,6 +34,16 @@ export class EventPage {
     console.log(this.user);
     console.log(this.event);
   }
+  ionViewDidLeave() {
+    this.isViewingMap = false;
+  }
+  addMarker(position, map) {
+    return new google.maps.Marker({
+      position,
+      map
+    });
+  }
+
   toggleCommenting() {
     if (this.isCommenting)
       this.postComment();
@@ -72,19 +88,39 @@ export class EventPage {
   }
   deleteComment(comment_id) {
     this.api.deleteComment(comment_id).then(res => {
-      let respond:any = res;
+      let respond: any = res;
       this.global.displayToast(respond.message);
       this.popComment(comment_id);
     })
   }
-  popComment(comment_id){
+  popComment(comment_id) {
     console.log("pop func");
     let temp = [];
-    for(let i=0; i<this.comments.length; i++){
-      if(this.comments[i].comment_id != comment_id)
-      temp.push(this.comments[i]);
+    for (let i = 0; i < this.comments.length; i++) {
+      if (this.comments[i].comment_id != comment_id)
+        temp.push(this.comments[i]);
     }
     this.comments = temp;
+  }
+  toggleMap() {
+    this.isViewingMap = !this.isViewingMap;
+    if (this.isViewingMap) {
+      setTimeout(() => {
+        this.platform.ready().then(() => {
+          let mapOptions = {
+            zoom: 10,
+            fullscreenControl: false
+          }
+
+          this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+
+          let latLng = new google.maps.LatLng(this.event.lat, this.event.lng);
+          this.map.setCenter(latLng);
+          this.map.setZoom(15);
+          this.addMarker(latLng, this.map);
+        })
+      }, 300);
+    }
   }
 
 }

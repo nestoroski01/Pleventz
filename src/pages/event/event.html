@@ -31,17 +31,35 @@
         <ion-input type="text" required name="comment" [(ngModel)]="comment"></ion-input>
       </ion-item>
     </div>
-    <button *ngIf="isLogged" ion-button full color="primary" (click)="toggleCommenting()">Add comment</button>
+    <div *ngIf="isViewingMap">
+      <div #map id="map"></div>
+    </div>
+    <ion-grid *ngIf="isLogged" text-center>
+      <ion-row>
+        <ion-col>
+          <button ion-button full color="primary" (click)="toggleCommenting()">Add comment</button>
+        </ion-col>
+        <ion-col>
+          <button id="mapButton" ion-button outline (click)="toggleMap()" icon-only>
+            <ion-icon name="map"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <button *ngIf="!isLogged" ion-button full (click)="toggleMap()" icon-only>
+      <ion-icon name="map"></ion-icon>
+    </button>
+    <!-- <button *ngIf="isLogged" ion-button full color="primary" (click)="toggleCommenting()">Add comment</button> -->
   </div>
 
   <div class="comments" padding *ngFor="let comment of comments">
-      <h4 id="username">{{comment.username}}
-        
-      </h4>
-      <span id="date">{{comment.date_added | date:'MMM d, y, hh:mm'}}</span>
-      <p id="comment">{{comment.comment}}</p>
-      <button id="delete" *ngIf="deleteCommentValidate(comment.user_id)" ion-button color="danger" full (click)="deleteComment(comment.comment_id)">
-        Delete Comment
-      </button>
-    </div>
+    <h4 id="username">{{comment.username}}
+
+    </h4>
+    <span id="date">{{comment.date_added | date:'MMM d, y, hh:mm'}}</span>
+    <p id="comment">{{comment.comment}}</p>
+    <button id="delete" *ngIf="deleteCommentValidate(comment.user_id)" ion-button color="danger" full (click)="deleteComment(comment.comment_id)">
+      Delete Comment
+    </button>
+  </div>
 </ion-content>

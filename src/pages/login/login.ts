@@ -79,8 +79,8 @@ export class LoginPage {
         this.global.user = this.user.object;
         this.global.isLogged = true;
         this.navCtrl.pop();
-        this.storage.setItem('user', this.global.user);
-        this.storage.setItem('isLogged', true);
+        // this.storage.setItem('user', this.global.user);
+        // this.storage.setItem('isLogged', true);
         }
       this.loader.dismiss();
     }).catch(err => {

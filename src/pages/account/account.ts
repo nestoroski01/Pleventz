@@ -70,7 +70,7 @@ export class AccountPage {
   }
 
   logOut(){
-    this.storage.setItem('isLogged', false);
+    // this.storage.setItem('isLogged', false);
     this.global.isLogged = false;
     this.navCtrl.pop();
   }

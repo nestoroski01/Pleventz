@@ -4,6 +4,8 @@ import { ApiProvider } from '../../providers/api/api';
 import { GlobalProvider } from '../../providers/global/global';
 import { Event } from '../../objects/event'
 import { EventPage } from '../event/event';
+import { AccountPage } from '../account/account';
+import { LoginPage } from '../login/login';
 
 
 @IonicPage()
@@ -94,5 +96,11 @@ export class EventsPage {
   }
   pushToEvent(event) {
     this.navCtrl.push(EventPage, { event: event });
+  }
+  pushToAccountPage(){
+    if(this.global.isLogged)
+      this.navCtrl.push(AccountPage)
+    else
+      this.navCtrl.push(LoginPage);
   }
 }
