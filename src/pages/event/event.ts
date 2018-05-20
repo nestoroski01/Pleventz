@@ -20,19 +20,24 @@ export class EventPage {
   comment: String;
   event: any;
   comments: any = [];
-  loader = this.loadingCtrl.create()
   user: any;
   isLogged = false;
   isViewingMap = false;
+  interested = false;
+  going = false;
+  canRespond = true;
+  interestedCount = 0;
+  goingCount = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, private api: ApiProvider,
     private loadingCtrl: LoadingController, private global: GlobalProvider, private platform: Platform) {
-    this.isLogged = global.isLogged;
-    this.user = global.user;
-    this.loader.present()
     this.event = this.navParams.get('event');
     this.getCommentsByEventId();
-    console.log(this.user);
-    console.log(this.event);
+    console.log(this.canRespond);
+  }
+  ionViewWillEnter() {
+    this.isLogged = this.global.isLogged;
+    this.user = this.global.user;
+    this.getResponses();
   }
   ionViewDidLeave() {
     this.isViewingMap = false;
@@ -43,14 +48,69 @@ export class EventPage {
       map
     });
   }
-
   toggleCommenting() {
     if (this.isCommenting)
       this.postComment();
     this.isCommenting = !this.isCommenting;
   }
+  addResponse(response: string) {
+    if (this.isLogged) {
+      this.api.addResponse(this.event.event_id, this.user.user_id, response).then(res => {
+        let respond: any = res;
+        if (respond.status > 0) {
+          this.canRespond = false;
+          // this.response = response;
+          if (response == 'Interested'){
+            this.interestedCount++;
+            this.interested = true;
+          }
+          else{
+            this.goingCount++;
+            this.going = true;
+          }
+        }
+        this.global.displayToast(respond.message);
+      }, err => {
+        console.log(err);
+        this.global.displayToast(err.message);
+      })
+    }
+    else {
+      this.navCtrl.push(LoginPage);
+      this.global.displayToast("You need to be logged in");
+    }
+  }
+  getResponses() {
+      this.global.showLoading();
+      this.interestedCount = 0;
+      this.goingCount = 0;
+      this.interested = false;
+      this.going = false;
+      this.api.getResponse(this.event.event_id).then(res => {
+        let respond: any = res;
+        respond.responses.forEach(response => {
+          if (response.response == "Interested"){
+            this.interestedCount++;
+          }
+          else if (response.response == "Going"){
+            this.goingCount++;
+          }
+          if (this.isLogged) {
+            if (response.user_id == this.user.user_id) {
+              this.canRespond = false;
+              if(response.response == "Interested")
+                this.interested = true;
+              else
+                this.going = true;
+            }
+          }
+        });
+      })
+      this.global.dismissLoading();
 
+  }
   getCommentsByEventId() {
+    this.global.showLoading();
     this.api.getCommentsByEventId(this.event.event_id).then(res => {
       let data: any = res;
       if (data.comments.length > 0) {
@@ -59,8 +119,8 @@ export class EventPage {
         });
         console.log(this.comments);
       }
-      this.loader.dismiss();
     })
+    this.global.dismissLoading();
   }
   postComment() {
     this.api.postComment(this.event.event_id, this.comment, new Date().toISOString(),

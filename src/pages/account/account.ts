@@ -14,7 +14,6 @@ import { NativeStorage } from '@ionic-native/native-storage';
 export class AccountPage {
   user: any = {};
   profileForm: FormGroup;
-  loader = this.loadingCtrl.create();
   isEditing = false;
   
   constructor(public navCtrl: NavController, public navParams: NavParams, private api: ApiProvider,
@@ -53,7 +52,7 @@ export class AccountPage {
   }
 
   updateProfile(){
-    this.loader.present()
+    this.global.showLoading();
     this.api.updateProfile(this.user).then( res => {
       this.user = res;
       this.global.displayToast(this.user.message);
@@ -61,12 +60,11 @@ export class AccountPage {
         this.global.user = this.user.object;
         this.isEditing = false;
         }
-      this.loader.dismiss();
     }).catch(err => {
       this.global.displayToast("Try again");
       console.log("ERROR - ", err);
-      this.loader.dismiss(); 
     })
+    this.global.dismissLoading();
   }
 
   logOut(){

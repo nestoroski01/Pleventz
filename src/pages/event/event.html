@@ -34,6 +34,24 @@
     <div *ngIf="isViewingMap">
       <div #map id="map"></div>
     </div>
+    <ion-list>
+        <ion-item>
+          <button [disabled]="!canRespond" class="responseButton" ion-button
+           [outline]="!interested" (click)="addResponse('Interested')">
+            <ion-icon name="star" large></ion-icon>
+            Interested
+          </button>
+          <ion-badge color="primary" item-end>{{interestedCount}}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <button [disabled]="!canRespond" class="responseButton" ion-button
+          [outline]="!going" (click)="addResponse('Going')">
+            <ion-icon name="checkmark-circle" large></ion-icon>
+            Going
+          </button>
+          <ion-badge color="primary" item-end>{{goingCount}}</ion-badge>
+        </ion-item>
+      </ion-list>
     <ion-grid *ngIf="isLogged" text-center>
       <ion-row>
         <ion-col>
@@ -49,7 +67,6 @@
     <button *ngIf="!isLogged" ion-button full (click)="toggleMap()" icon-only>
       <ion-icon name="map"></ion-icon>
     </button>
-    <!-- <button *ngIf="isLogged" ion-button full color="primary" (click)="toggleCommenting()">Add comment</button> -->
   </div>
 
   <div class="comments" padding *ngFor="let comment of comments">

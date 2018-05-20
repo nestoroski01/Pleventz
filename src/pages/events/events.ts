@@ -18,7 +18,6 @@ export class EventsPage {
   events: any = [];
   event: any = {};
   result: any;
-  loader = this.loadingCtrl.create();
   isSearching = false;
   date;
   keyword = '';
@@ -45,7 +44,7 @@ export class EventsPage {
     this.category = this.events;
   }
   getEvents() {
-    this.loader.present();
+    this.global.showLoading();
     this.api.getEvents().then(res => {
       this.result = res;
       if (this.result.events.length > 0) {
@@ -70,7 +69,7 @@ export class EventsPage {
     }, err => {
       this.global.displayToast("Error in loading events, try again");
     })
-    this.loader.dismiss();
+    this.global.dismissLoading();
 
   }
   search(search, date) {

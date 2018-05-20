@@ -151,6 +151,38 @@ export class ApiProvider {
       })
     })
   }
+  addResponse(event_id, user_id, response){
+    let data = {
+      event_id: event_id,
+      user_id: user_id,
+      response: response
+    }
+    let params = this.urlParams(data);
+
+    return new Promise((resolve, reject) => {
+      this.http.post(this.url + "addrespons", params.toString(), this.header)
+      .subscribe(res => {
+        resolve(res);
+        console.log(res);
+      }, err => {
+        reject(err);
+        console.log(err);
+      })
+    })
+  }
+  getResponse(event_id){
+    return new Promise((resolve, reject) => {
+      this.http.get(this.url + "getResponse?event_id=" + event_id)
+      .subscribe(res => {
+        resolve(res);
+        console.log(res);
+      }, err => {
+        reject(err);
+        console.log(err);
+      })
+    })
+  }
+
   urlParams(data){
     let params = new URLSearchParams();
     for(let key in data)

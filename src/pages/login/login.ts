@@ -16,7 +16,6 @@ export class LoginPage {
   registerData: any = {};
   loginForm: FormGroup;
   registerForm: FormGroup;
-  loader = this.loadingCtrl.create();
   user: any = {};
   constructor(public navCtrl: NavController, public navParams: NavParams, private api: ApiProvider,
     private global: GlobalProvider, private loadingCtrl: LoadingController, private storage: NativeStorage) {
@@ -71,23 +70,22 @@ export class LoginPage {
     this.proceedLogin();
   }
   proceedLogin(){
-    this.loader.present()
-    this.api.login(this.loginData.email,this.loginData.password).then(res => {
-      this.user = res;
-      this.global.displayToast(this.user.message);
-      if(this.user.status > 0){
-        this.global.user = this.user.object;
-        this.global.isLogged = true;
-        this.navCtrl.pop();
-        // this.storage.setItem('user', this.global.user);
-        // this.storage.setItem('isLogged', true);
-        }
-      this.loader.dismiss();
-    }).catch(err => {
-      this.global.displayToast("Try again");
-      console.log("ERROR - ", err);
-      this.loader.dismiss();      
-    })
+      this.global.showLoading();
+      this.api.login(this.loginData.email,this.loginData.password).then(res => {
+        this.user = res;
+        this.global.displayToast(this.user.message);
+        if(this.user.status > 0){
+          this.global.user = this.user.object;
+          this.global.isLogged = true;
+          this.navCtrl.pop();
+          // this.storage.setItem('user', this.global.user);
+          // this.storage.setItem('isLogged', true);
+          }
+      }).catch(err => {
+        this.global.displayToast("Try again");
+        console.log("ERROR - ", err);
+      })
+      this.global.dismissLoading();
   }
   register(){
     if(!this.registerForm.controls.forename.valid){
@@ -125,7 +123,7 @@ export class LoginPage {
     this.proceedRegister();
   }
   proceedRegister(){
-    this.loader.present();
+    this.global.showLoading();
     this.api.register(this.registerData.email,this.registerData.password, this.registerData.forename, this.registerData.surname, this.registerData.username).then(res => {
       this.user = res;
       if(this.user.status > 0){
@@ -136,11 +134,10 @@ export class LoginPage {
       }
       else
         this.global.displayToast(this.user.validation_error[0]);        
-      this.loader.dismiss()      
     }).catch(err => {
       this.global.displayToast("Try again");
       console.log("ERROR - ", err);
-      this.loader.dismiss();      
     })
+    this.global.dismissLoading();
   }
 }

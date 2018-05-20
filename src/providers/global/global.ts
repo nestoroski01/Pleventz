@@ -12,6 +12,7 @@ import { ToastController, LoadingController } from 'ionic-angular';
 export class GlobalProvider {
   isLogged;
   user;
+  loading;
   constructor(public http: HttpClient, private toastCtrl: ToastController, private loadingCtrl: LoadingController) {
     
   }
@@ -22,5 +23,19 @@ export class GlobalProvider {
     });
     toast.present();
   }
+  showLoading() {
+    if(!this.loading){
+        this.loading = this.loadingCtrl.create({
+            content: 'Please Wait...'
+        });
+        this.loading.present();
+    }
+}
 
+dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 }
