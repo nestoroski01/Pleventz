@@ -81,29 +81,6 @@ export class ApiProvider {
       })
     })
   }
-  addEvent(event_name, address, lat, lng, category, event_time, event_date, description){
-    let data = {
-      event_name: event_name,
-      address: address,
-      lat: lat,
-      lng: lng,
-      category: category,
-      event_time: event_time,
-      event_date: event_date,
-      description: description
-    };
-    let params = this.urlParams(data);
-    
-    return new Promise((resolve, reject) => {
-      this.http.post(this.url + "addEvent", params.toString(), this.header)
-      .subscribe(res => {
-        resolve(res);
-        console.log(res);
-      }, err => {
-        console.log(err);
-      })
-    })
-  }
   getCommentsByEventId(event_id){
     return new Promise((resolve, reject) => {
       this.http.get(this.url + "getCommentsByEventId?event_id=" + event_id)

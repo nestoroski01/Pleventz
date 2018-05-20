@@ -4,7 +4,7 @@ export class Event {
     event_date;
     event_time;
     address;
-    description;
+    about;
     image;
     lat;
     lng;
@@ -16,7 +16,7 @@ export class Event {
         this.event_date = event.event_date;
         this.event_time = event.event_time;
         this.address = event.address;
-        this.description = event.description;
+        this.about = event.about;
         this.image = event.image;
         this.lat = event.lat;
         this.lng = event.lng;

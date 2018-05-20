@@ -78,7 +78,7 @@ export class EventsPage {
     if (val.trim() !== '') {
       this.category = this.events.filter((item) => {
         return item.event_name.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-          item.description.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+          item.about.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
           item.event_date.indexOf(date) > -1
       })
     }
